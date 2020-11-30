@@ -19,12 +19,14 @@ function setSquare(thisSquare) {
                              3,3,3,3,3,
                              4,4,4,4,4);
     let colBases = colPlace[thisSquare] * 15;
-    let newNum = colBases + getNewNum() + 1;
+    let newNum;
+    
+    do {
+        newNum = colBases + getNewNum() + 1;
+    } while (usedNums[newNum]);
 
-    if(!usedNums[newNum]){
-        usedNums[newNum] = true;
-        document.getElementById(currSquare).innerHTML = newNum;
-    }
+    usedNums[newNum] = true;
+    document.getElementById(currSquare).innerHTML = newNum;
 }
 
 function getNewNum() {
