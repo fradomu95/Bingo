@@ -1,5 +1,48 @@
+var buzzwords = new Array (
+    "Aggregate",
+    "Ajax",
+    "API",
+    "Bandwidth",
+    "Beta",
+    "Bleeding edge",
+    "Convergence",
+    "Design pattern",
+    "Disruptive",
+    "DRM",
+    "Enterprise",
+    "Facilitate",
+    "Folksonomy",
+    "Framework",
+    "Impact",
+    "Innovate",
+    "Long tail",
+    "Mashup",
+    "Microformats",
+    "Mobile",
+    "Monetize",
+    "Open social",
+    "Paradigm",
+    "Podcast",
+    "Proactive",
+    "Rails",
+    "Scalable",
+    "Social bookmarks",
+    "Social graph",
+    "Social software",
+    "Spam",
+    "Synergy",
+    "Tagging",
+    "Tipping point",
+    "Truthiness",
+    "User-generated",
+    "Vlog",
+    "Webinar",
+    "Wiki",
+    "Workflow"
+);
+
+let usedWords = new Array(buzzwords.length);
 window.onload = initAll;
-let usedNums = new Array(76);
 
 function initAll() {
     if (document.getElementById) {
@@ -17,32 +60,21 @@ function newCard() {
 }
 
 function setSquare(thisSquare) {
-    let currSquare = "square" + thisSquare;
-    let colPlace = new Array(0,0,0,0,0,
-                             1,1,1,1,1,
-                             2,2,2,2,
-                             3,3,3,3,3,
-                             4,4,4,4,4);
-    let colBases = colPlace[thisSquare] * 15;
-    let newNum;
-    
     do {
-        newNum = colBases + getNewNum() + 1;
-    } while (usedNums[newNum]);
+        var randomWord = Math.floor(Math.random() *buzzwords.length);
+    }while (usedWords[randomWord]);
 
-    usedNums[newNum] = true;
-    document.getElementById(currSquare).innerHTML = newNum;
+    usedWords[randomWord] = true;
+    let currSquare = "square" + thisSquare;
+
+    document.getElementById(currSquare).innerHTML = buzzwords[randomWord];
     document.getElementById(currSquare).className = "";
     document.getElementById(currSquare).onmousedown = toggleColor;
 }
 
-function getNewNum() {
-    return Math.floor(Math.random()*15);
-}
-
 function anotherCard() {
-    for (let i = 1; i < usedNums.length; i++){
-        usedNums[i] = false;
+    for (let i = 1; i < buzzwords.length; i++){
+        usedWords[i] = false;
     }
 
     newCard();
