@@ -18,7 +18,11 @@ function setSquare(thisSquare) {
                              3,3,3,3,3,
                              4,4,4,4,4);
     let colBases = colPlace[thisSquare] * 15;
-    let newNum = colBases + Math.floor(Math.random()*15) +1;
+    let newNum = colBases + getNewNum() + 1;
 
     document.getElementById(currSquare).innerHTML = newNum;
+}
+
+function getNreNum() {
+    return Math.floor(Math.random()*15);
 }
