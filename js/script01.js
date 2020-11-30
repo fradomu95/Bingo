@@ -12,7 +12,13 @@ function initAll() {
 
 function setSquare(thisSquare) {
     let currSquare = "square" + thisSquare;
-    let newNum = Math.floor(Math.random() * 75) + 1;
+    let colPlace = new Array(0,0,0,0,0,
+                             1,1,1,1,1,
+                             2,2,2,2,
+                             3,3,3,3,3,
+                             4,4,4,4,4);
+    let colBases = colPlace[thisSquare] * 15;
+    let newNum = colBases + Math.floor(Math.random()*15) +1;
 
     document.getElementById(currSquare).innerHTML = newNum;
 }
