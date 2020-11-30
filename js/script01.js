@@ -23,6 +23,6 @@ function setSquare(thisSquare) {
     document.getElementById(currSquare).innerHTML = newNum;
 }
 
-function getNreNum() {
+function getNewNum() {
     return Math.floor(Math.random()*15);
 }
