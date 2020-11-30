@@ -1,8 +1,12 @@
 window.onload = initAll;
 
 function initAll() {
-    for (let i = 0; i < 24; i++) {
-        setSquare(i);    
+    if (document.getElementById) {
+        for (let i = 0; i < 24; i++) {
+            setSquare(i);    
+        }
+    } else {
+        alert("Sorry, your browser doesn't support this script");
     }
 }
 
