@@ -1,4 +1,5 @@
 window.onload = initAll;
+let usedNums = new Array(76);
 
 function initAll() {
     if (document.getElementById) {
@@ -20,7 +21,10 @@ function setSquare(thisSquare) {
     let colBases = colPlace[thisSquare] * 15;
     let newNum = colBases + getNewNum() + 1;
 
-    document.getElementById(currSquare).innerHTML = newNum;
+    if(!usedNums[newNum]){
+        usedNums[newNum] = true;
+        document.getElementById(currSquare).innerHTML = newNum;
+    }
 }
 
 function getNewNum() {
