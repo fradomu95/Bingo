@@ -44,7 +44,7 @@ let tabla =
         </tr>
 </table>`;
 
-let numCartones = prompt("¿Cuantos cartones quieres?",1);
+let numCartones = Number(prompt("¿Cuantos cartones quieres?",1));
 
 window.onload = initAll(numCartones);
 let usedNums = new Array(numCartones);
