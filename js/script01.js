@@ -44,6 +44,9 @@ let tabla =
         </tr>
 </table>`;
 
+let alea = 0;
+let bolas = new Array();
+
 let numCartones = Number(prompt("¿Cuantos cartones quieres?","1"));
 let usedNums = new Array(numCartones);
 for (let i = 0; i < usedNums.length; i++){
@@ -51,13 +54,6 @@ for (let i = 0; i < usedNums.length; i++){
 }
 
 window.onload = initAll;
-
-function bolaAleatoria() {
-    let alea = Math.floor(Math.random()*75)+1;
-    let span = document.getElementById("num-alea");
-    
-    span.innerHTML += " "+ alea;
-}
 
 function initAll() {
     if (document.getElementById) {
@@ -76,7 +72,6 @@ function initAll() {
 }
 
 function newCard(thisCarton) {
-    
     for (let i = 0; i < 24; i++) {
         setSquare(thisCarton,i);    
     }
@@ -104,7 +99,7 @@ function setSquare(thisCarton,thisSquare) {
     currSquare = "square_" + thisCarton + "_" + thisSquare;
     document.getElementById(currSquare).innerHTML = newNum;
     document.getElementById(currSquare).className = "";
-    document.getElementById(currSquare).onmousedown = toggleColor;
+    // document.getElementById(currSquare).onmousedown = toggleColor;
 }
 
 function getNewNum() {
@@ -121,15 +116,28 @@ function anotherCard() {
     for(let i = 0; i < numCartones; i++) {
         newCard(i);
     }
+
+    
+    bolas = [];
+
+    let span = document.getElementById("num-alea");
+    let cantIntentos = document.getElementById("intentos");
+    
+    span.innerHTML = "Números:";
+    cantIntentos.innerHTML = "Bolas sacadas: ";
+
+    clearInterval(intervalo);
+    intervalo = interval();
+
     return false;
 }
 
-function toggleColor(evt) {
-    if (evt) {
-        var thisSquare = evt.target
-    } else {
-        var thisSquare = window.event.srcElement;
-    }
+function toggleColor(thisSquare) {
+    // if (evt) {
+    //     var thisSquare = evt.target
+    // } else {
+    //     var thisSquare = window.event.srcElement;
+    // }
     if (thisSquare.className == "") {
         thisSquare.className = "pickedBG";
     } else {
@@ -153,18 +161,19 @@ function checkWin() {
  *  SOLUCION MAS ALTA POSIBLE ES ->                 11111 00000 0000 00000 00000 = 16252928
  */
 
-        for (let j = 0; j < numCartones; j++) {
+    for (let j = 0; j < numCartones; j++) {
+
+        for(let i = 0; i < 24; i++) {
+            var currSquare = "square_" + j + "_" + i;
     
-            for(let i = 0; i < 24; i++) {
-                var currSquare = "square_" + j + "_" + i;
-        
-                if(document.getElementById(currSquare).className != "") {
-                    document.getElementById(currSquare).className = "pickedBG";
-                    setSquares[j] = setSquares[j] | Math.pow(2,i);    // PREGUNTAR, CONVIERTE SETSQUARES EN BINARIO Y MATH.POW(2,i) Y LOS UNE CON UN OR -> 00001 | 00010 = 00011
-                                                                // PORQ SETSQUARES = 0 | 2^0 = 1 PARA EL PRIMER CUADRADO, 1 | 2 = 0011
-                }
+            if(document.getElementById(currSquare).className != "") {
+                document.getElementById(currSquare).className = "pickedBG";
+                setSquares[j] = setSquares[j] | Math.pow(2,i);    // PREGUNTAR, CONVIERTE SETSQUARES EN BINARIO Y MATH.POW(2,i) Y LOS UNE CON UN OR -> 00001 | 00010 = 00011
+                                                            // PORQ SETSQUARES = 0 | 2^0 = 1 PARA EL PRIMER CUADRADO, 1 | 2 = 0011
             }
         }
+    }
+
     for(let h = 0; h < setSquares.length; h++){
         for (let i = 0; i < winners.length; i++) {
             if ((winners[i] & setSquares[h]) == winners[i]) {
@@ -180,15 +189,62 @@ function checkWin() {
                 if (winners[winningOption] & Math.pow(2,i) && cartonGanador == j){
                     currSquare = "square_" + j + "_" + i;
                     document.getElementById(currSquare).className = "winningBG";
+                    clearInterval(intervalo);
                 }
             }
         }
     }
 }
 
-let intervalo = setInterval(bolaAleatoria,2000);
+function bolaAleatoria() {
+    do {
+        alea = Math.floor(Math.random()*75)+1;
+    } while (bolas.find(bola => bola == alea))
+
+    bolas.push(alea);
+
+    let span = document.getElementById("num-alea");
+    let cantIntentos = document.getElementById("intentos");
+    
+    span.innerHTML += " "+ alea;
+    cantIntentos.innerHTML = "Bolas sacadas: " + bolas.length;
+
+    for(let j = 0; j < numCartones; j++){
+        for (let i = 0; i < 24; i++){
+
+            currentSquare = "square_" + j + "_" + i;
+            numberSquare = document.getElementById(currentSquare).innerHTML;
+
+            if(alea == numberSquare) {
+                document.getElementById(currentSquare).className = "pickedBG";
+            }
+        }
+    }
+
+    if (bolas.length == 75) {
+        clearInterval(intervalo);
+    }
+
+    checkWin();
+}
+
+function interval() {
+    return setInterval(bolaAleatoria,2000);
+}
+
+let intervalo = interval();
+
+
 
 /**
  * ACLARACION PARA FACILITAR LA CORRECCION
  * 
+ * 1. He añadido un span al html para el listado de los números
+ * 2. He añadido la función bolaAleatorio que te saca una bola aleatoria en un intervalo
+ * 3. He definido un intervalo al final del código
+ * 4. Se ha añadido un array "bolas" para la comprobación de que no se puedan sacar 2 bolas iguales
+ * 5. Se ha añadido una condicional para evitar un bucle infinito al sacar las bolas
+ * 6. He actualizado al función de crear una nueva carta para que se inicialize de 0 el sacar bolas.
+ * 7. Añadida funcion de clear interval si gana uno de los dos jugadores
+ * 8. Añadida funcion interval para solo tener que cambiar el tiempo de un sitio para cambiar el intervalo
  */
