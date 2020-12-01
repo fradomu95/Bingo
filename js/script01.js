@@ -52,10 +52,17 @@ for (let i = 0; i < usedNums.length; i++){
 
 window.onload = initAll;
 
+function bolaAleatoria() {
+    let alea = Math.floor(Math.random()*75)+1;
+    let span = document.getElementById("num-alea");
+    
+    span.innerHTML += " "+ alea;
+}
+
 function initAll() {
     if (document.getElementById) {
         document.getElementById("reload").onclick = anotherCard;
-
+        
         for (let i = 0; i < numCartones; i++) {
             let div = document.createElement("div");
             div.innerHTML = tabla;
@@ -179,25 +186,9 @@ function checkWin() {
     }
 }
 
+let intervalo = setInterval(bolaAleatoria,2000);
+
 /**
  * ACLARACION PARA FACILITAR LA CORRECCION
  * 
- * Para la mejora 1 he hecho lo siguiente: 
- * 1. He añadido la variable de tablas con la que voy a crear las tablas
- * 2. He hecho un prompt para pedir el número de cartones a hacer y guardarlos en una variable global
- * 3. usedNums lo he modificado para que sea un array bidimensional con tantas filas como cartones haya para controlar los números de cada cartón
- * 4. en initAll he añadido un bucle para crear varios cartones y en cada iteración del bucle se 
- *    crea el elemento div con la tabla y se llama a la funcion newCard que creará el cartón
- * 5. newCard ahora acepta un argumento que es el carton que se va a dirigir
- * 6. setSquare ahora recibe 2 argumentos los cuales son el carton y la celda
- * 7. Dentro de setSquare, reemplazo el id de la tabla que tiene temporalmente para identificarlo y se sustituye pero un nuevo id
- *    el cual es square_#_$ donde # es el cartón y $ la celda
- * 8. En anotherCard se ha modificado el bucle para limpiar usedNums para recorrer todo el array bidimensional
- * 9. en el checkWin se han hecho una serie de cambios:
- *  9.1 se ha cambiado la variable setSquares por un array para guardar la solución de cada array por diferente lugar
- *  9.2 se ha añadido cartonGanador con valor por defecto -1
- *  9.3 se han cambiado todos los bucles que recorria un solo carton para recorra todos ellos
- *  9.4 se almacenan los binarios de los cartones en su posición del array y se guarda en cartón ganador el cartón que tenga la solución
- * 10. Por último he realizado un cambio en newCard, el cual solo cambia el id si este no existe, ya que al pulsar el botón de "reload" este intentaba acceder a un id que no existía
- *     saltaba error y se recargaba la página en vez de cambiar solo los números
  */
