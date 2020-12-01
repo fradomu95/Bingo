@@ -106,8 +106,10 @@ function getNewNum() {
 }
 
 function anotherCard(numCartones) {
-    for (let i = 1; i < usedNums.length; i++){
-        usedNums[i] = false;
+    for(let j = 0; j < numCartones; j++){
+        for (let i = 1; i < usedNums[j].length; i++){
+            usedNums[j][i] = false;
+        }
     }
 
     for(let i = 0; i < numCartones; i++) {
